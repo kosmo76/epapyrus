@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="keywords" content=""/>
+  <meta name="description" content=""/>
+  <meta name="author" content="Kosmo from Open Synergy"/>
+  
+  <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="{{ STATIC_URL }}css/code.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+ 
+  {% block meta%} {% endblock %}
+  <title>OpenSynergy</title>
+  
+  </head>
+
+
+<body>
+<div id='upper_stripe'> </div>
+<div id="main">
+
+    <!-- header section -->
+    <header id="header-top">
+    <a href="{% url main %}"> <h1>  Open Synergy notebook </h1> </a>
+        <nav>
+        <ul>
+            <li> <a href="{% url main %}">Home </a></li>
+            {% if user.is_authenticated %}
+                <li> <a href="{% url article_add %}"> Add article </a></li>
+                <li> <a href="{% url grouper_add %}"> Add gruper </a></li>
+                <li> <a href="{% url logout %}"> Logout </a></li>
+            {% endif %}
+        </ul>
+        </nav>
+    </header>
+    <!-- end header section -->
+    
+    <!-- quote section -->
+    {% block quote %} {% endblock %}
+    <!-- end quote section -->
+    
+   {% block blog %} {% endblock%}
+    
+    <!-- end blog section -->
+    
+    <!-- footer section -->
+    <footer>
+    <p style="float:left;">OpenSynergy - we belive in cooperation and good fun !!!</p> <address style="float:right;padding-top:15px;"> <a href="mailto:"> contact@opensynergy.pl </a></address>
+    
+    </footer>
+    <!-- end footer section -->
+    
+</div>    
+
+
+</body>
+</html>

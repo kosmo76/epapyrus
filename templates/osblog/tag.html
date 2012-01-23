@@ -1,0 +1,46 @@
+{% extends "osblog/main_base.html" %}
+
+{% block quote %}
+<article class="quote">
+    <p class="quote">
+    “Fine, Java MIGHT be a good example of what a programming language should be like. But Java applications are good examples of what applications SHOULDN’T be like.”
+    </p>
+    <p class="quote_author">
+        Noname
+    </p>    
+</article>
+{% endblock %}
+{%block blog %}
+
+{% for i in object_list %}
+
+  
+   {% if i.publish == 1 %}
+   <article class="blog">
+            <div class="blog_date">{{ i.creation_datetime|date:"Y-m-d" }} <br><a href="">{{ i.author }}</a> </div>
+            <div class="entry"><head><h1 class="title"><a href="{% url article i.id %}">{{i.title }}</a></h1></head> 
+            <nav class="tags"> {% for tag in i.get_tag %}<a href=""> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</nav>
+            <p class="clear"> {{i.teaser }} </p>
+            <p class="more"> <a href="{% url article i.id %}"> read more &gt;&gt;</a></p>
+            </div>
+            
+            <div class="clear"></div>   
+    </article>
+    {% else %}
+     {% if user.is_authenticated and user == i.author %}
+        <article class="blog not_published">
+            <div class="blog_date">{{ i.creation_datetime|date:"Y-m-d" }} <br><a href="">{{ i.author }}</a> </div>
+            <div class="entry"><head><h1 class="title"><a href="">{{i.title }}</a></h1></head> 
+            <nav class="tags">  {% for tag in i.get_tag %}<a href=""> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</nav>
+            <p class="clear"> {{i.teaser }} </p>
+            <p class="more"> <a href="{% url article i.id %}"> read more &gt;&gt;</a></p>
+            </div>
+            
+            <div class="clear"></div>   
+        </article>
+   
+     {% endif %}
+   {% endif %}
+{% endfor %} 
+
+{% endblock %}

@@ -1,0 +1,39 @@
+
+{% load markup %}
+
+<html>
+<head>
+<link href="{{ STATIC_URL }}style1.css" rel="stylesheet" type="text/css"/>
+<link href="{{ STATIC_URL }}code.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{{ STATIC_URL }}jquery.js"></script>
+<script type="text/javaScript" src="{{ STATIC_URL }}jquery.chili-2.2.js"></script>
+<script type="text/javascript">
+        ChiliBook.recipeFolder = "{{ STATIC_URL }}"; 
+        ChiliBook.automatic = true; 
+        ChiliBook.lineNumbers = true; 
+</script> 
+</had>
+
+<body>
+<article>
+<img src="{{STATIC_URL }}images/1.jpg">
+<head><h1 class='moja'>{{ object.title }}</h1></head>
+<div>
+{{object.creation_datetime }}<br>
+{{object.modification_datetime }}<br>
+{{object.author}}</br>
+{{object.get_tag.0.tab.name}}
+</div>
+<div>
+<p>
+{{object.body|markdown:"codehilite" }}
+
+{{ object.get_test|safe}}
+</p>
+</div>
+<p><a href="{% url article_update object.id %}"> edit </a></p>
+<p><a href="{% url article_delete object.id %}"> delete </a></p>
+
+</article>
+</body>
+</html>
