@@ -16,8 +16,8 @@
 {% endblock %}
 
 {% block blog %}
-   {% if object.publish == 1 %}
-   <article class="blog">
+   {% if object.is_published == 1 %}
+   <article class="blog {% if not object.is_promoted %} not_promoted {% endif %}">
             <div class="blog_date">{{ object.creation_datetime|date:"Y-m-d" }} <br><a href="">{{object.author }}</a> </div>
             <div class="entry"><head><h1 class="title"><a href="">{{object.title }}</a></h1></head> 
             <nav class="tags">  {% for tag in object.get_tag %}<a href="{% url tag_view tag.code %}"> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</a></nav>

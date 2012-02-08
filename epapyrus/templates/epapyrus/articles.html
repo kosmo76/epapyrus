@@ -15,8 +15,8 @@
 {% for i in object_list %}
 
   
-   {% if i.publish == 1 %}
-   <article class="blog">
+   {% if i.is_published == 1 %}
+   <article class="blog {% if not i.is_promoted %} not_promoted {% endif %}">
             <div class="blog_date">{{ i.creation_datetime|date:"Y-m-d" }} <br><a href="">{{ i.author }}</a> </div>
             <div class="entry"><head><h1 class="title"><a href="{% url article i.id %}">{{i.title }}</a></h1></head> 
             <nav class="tags"> {% for tag in i.get_tag %}<a href="{% url tag_view tag.code %}"> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</nav>

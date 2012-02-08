@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from epapyrus.views  import simple, edit, listing, detail
 
 urlpatterns = patterns('',
-                       url(r'^main/$', listing.ArticlesView.as_view(), name='main'),
+                       url(r'^$', listing.ArticlesView.as_view(), name='main'),
                        url(r'^article/add/$', login_required(edit.ArticleCreateView.as_view()), name='article_add'),
                        url(r'^article/(?P<pk>\d+)/$', detail.ArticleDetailView.as_view(), name='article'),
                        url(r'^article/(?P<pk>\d+)/edit/$', login_required(edit.ArticleUpdateView.as_view()), name='article_update'),

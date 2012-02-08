@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
-from django.db.models import get_model
+from django.db.models import get_model, Q
+
 
 class ArticlesView(ListView):
     model = get_model('epapyrus','Article')
     template_name = 'epapyrus/articles.html'
     
-    #queryset = get_model('osblog','Article').objects.filter(publish__exact=True);
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            q1 = Q(author__exact=self.request.user)
+            q2 = Q(is_promoted__exact=True, is_published__exact=True)
+            return get_model('epapyrus','Article').objects.filter(q1|q2)
+        else:
+            return get_model('epapyrus','Article').objects.filter(is_promoted__exact=True, is_published__exact=True);
+    
     
 class TagView(ListView):
     

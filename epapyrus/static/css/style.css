@@ -276,6 +276,12 @@ textarea.teaser
 {
   background-color: #fff2f2;    
 }
+
+.not_promoted
+{
+  background-color: #FAFFF7;    
+}
+
 .blue
 {
  color: #00ADD4;    
