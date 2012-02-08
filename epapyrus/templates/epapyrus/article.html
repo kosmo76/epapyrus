@@ -1,0 +1,60 @@
+{% extends "epapyrus/main_base.html" %}
+
+{% load i18n %}
+{% trans "example" %}
+
+{% load markup %}
+{% block quote %}
+<article class="quote">
+    <p class="quote">
+    “Fine, Java MIGHT be a good example of what a programming language should be like. But Java applications are good examples of what applications SHOULDN’T be like.”
+    </p>
+    <p class="quote_author">
+        Noname
+    </p>    
+    </article>
+{% endblock %}
+
+{% block blog %}
+   {% if object.publish == 1 %}
+   <article class="blog">
+            <div class="blog_date">{{ object.creation_datetime|date:"Y-m-d" }} <br><a href="">{{object.author }}</a> </div>
+            <div class="entry"><head><h1 class="title"><a href="">{{object.title }}</a></h1></head> 
+            <nav class="tags">  {% for tag in object.get_tag %}<a href="{% url tag_view tag.code %}"> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</a></nav>
+            <p class="clear"> {{ object.get_test|safe}} </p>
+            
+            {% if user.is_authenticated %}
+             {% if  user == object.author %}
+                <p class="more"> 
+                    <span class="article_nav"> <a href="{% url article_update object.id %}"> Edit </a></span> 
+                    <span class="article_nav">  <a href="{% url article_delete object.id %}"> Delete</a></span>
+                </p>
+                {% endif %}
+            {% endif %}
+            </div>
+            <div class="clear"></div>   
+           
+    </article>
+   {% else %}
+     {% if user.is_authenticated and user == object.author %}
+         <article class="blog not_published">
+            <div class="blog_date">{{ object.creation_datetime|date:"Y-m-d" }} <br><a href="">{{object.author }}</a> </div>
+            <div class="entry"><head><h1 class="title"><a href="">{{object.title }}</a></h1></head> 
+            <nav class="tags">  {% for tag in object.get_tag %}<a href=""> <span style="padding-left:10px;">{{tag}} </span></a>  {% endfor %}</nav>
+            <p class="clear"> {{ object.get_test|safe}} </p>
+            
+            {% if user.is_authenticated %}
+             {% if  user == object.author %}
+                <p class="more"> 
+                    <span class="article_nav"> <a href="{% url article_update object.id %}"> Edit </a></span> 
+                    <span class="article_nav">  <a href="{% url article_delete object.id %}"> Delete</a></span>
+                </p>
+                {% endif %}
+            {% endif %}
+            </div>
+            <div class="clear"></div>   
+        </article>
+      {% endif %}
+    {% endif %}
+     
+{% endblock %}
