@@ -3,9 +3,25 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.db.models import get_model
-
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 import markdown
 import re
+import os
+import datetime
+
+
+
+files_location = os.path.join(settings.MEDIA_ROOT)
+file_system_storage = FileSystemStorage(location=files_location, base_url=settings.MEDIA_URL) 
+
+def image_save(instance, filename):
+    personal = instance.article.id
+    return  os.path.join("%s" % instance.article.id,'images', '%s'%filename)
+  
+
+
+
 
 # Create your models here.
 
@@ -36,7 +52,7 @@ class Article(models.Model):
 
     body = models.TextField(verbose_name="Article body")
     teaser = models.TextField(verbose_name="Teaser", blank=True)
-    footer = models.TextField(verbose_name="References", blank=True)
+    extras = models.TextField(verbose_name="Reference for Markdown", blank=True)
    
     grouper = models.ForeignKey('Grouper', verbose_name="Grouper", related_name="articles", null=True, blank=True)
     weight = models.IntegerField(verbose_name="Weight", default=0)
@@ -50,10 +66,11 @@ class Article(models.Model):
         article_model = ContentType.objects.get(app_label="epapyrus", model="article")
         article_tag= models.get_model('epapyrus', 'PrimaryTagItem').objects.filter(content_type__pk__exact=article_model.id, object_id__exact=self.id).values_list('tag', flat=True);
         return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=article_tag)
-        
+    
+    
+    #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
-        napis = self.footer + self.body
-        #regexp = re.compile(r"\$\$([^$]+)\$\$",re.UNICODE)
+        napis = self.extras + self.body
         regexp = re.compile(r"\${1,2}([^$]+)\${1,2}",re.UNICODE)
         
         r = regexp.search(napis)
@@ -63,10 +80,11 @@ class Article(models.Model):
         nowy=""
         for i in  dane:
             end=i.start()
-            nowy += markdown.markdown( self.footer+napis[start:end] ,['codehilite(force_linenos=True)'])
+            nowy += markdown.markdown( self.extras+napis[start:end] ,['codehilite(force_linenos=True)'])
             nowy += napis[i.start():i.end()]+" "
             start=i.end()
-        nowy += markdown.markdown(self.footer+napis[start:],['codehilite(force_linenos=True)'])
+        nowy += markdown.markdown(self.extras+napis[start:],['codehilite(force_linenos=True)'])
+        nowy = nowy.replace('locale://',settings.MEDIA_URL)
         return nowy
 
         
@@ -97,3 +115,9 @@ class PrimaryTagItem(models.Model):
     def __unicode__(self):
         return u"%s" % self.tag
 
+class ArticleImage(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Title", blank=True)
+    article = models.ForeignKey('Article', verbose_name = "Image", related_name="article_images")
+    attachment = models.FileField(storage = file_system_storage, upload_to = image_save)
+    
+    

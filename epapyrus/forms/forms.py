@@ -31,3 +31,10 @@ class CreateGrouper(forms.ModelForm):
         exclude = ('author')
         
         
+
+class AddImage(forms.ModelForm):
+    
+    class Meta:
+        model = models.ArticleImage
+        exclude = ('article')
+    

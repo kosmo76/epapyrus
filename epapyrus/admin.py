@@ -9,3 +9,4 @@ admin.site.register(Article)
 
 admin.site.register(PrimaryTagType)
 admin.site.register(PrimaryTagItem)
+admin.site.register(ArticleImage)

@@ -13,11 +13,11 @@ urlpatterns = patterns('',
                        
                        url(r'^grouper/add$', login_required(edit.GrouperCreateView.as_view()), name='grouper_add'),
                        url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'epapyrus/login.html'}),
-                       url(r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': '/main/'},name='logout'),
+                       url(r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': ''},name='logout'),
 
                        url(r'^tag/(?P<tag_code>programming|cpp|c|python)/$',listing.TagView.as_view(), name="tag_view"),
                        url(r'^books/$',listing.BookView.as_view(), name="book_view"),
-                       
+                       url(r'^image/(?P<article>\d+)/add/$',login_required(edit.ArticleImageCreateView.as_view()), name="add_image"),
                        ## Uncomment the admin/doc line below to enable admin documentation:
                         #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

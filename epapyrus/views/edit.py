@@ -20,6 +20,18 @@ tag_save = django.dispatch.Signal(providing_args=['parent','tag'])
 obj_delete = django.dispatch.Signal(providing_args=['obj'])
 
 
+class ArticleImageCreateView(CreateView):
+    model = get_model('epapyrus', 'ArticleImage')
+    template_name = 'epapyrus/image_add.html'
+    form_class = forms.AddImage
+ 
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.article = get_model('epapyrus','article').objects.get(pk=self.kwargs['article'])
+        self.object.save()
+        
+        return HttpResponseRedirect("/article/%s/edit/"% self.kwargs['article'])
 
 class ArticleCreateView(CreateView):
     model = get_model('epapyrus', 'Article')
@@ -53,17 +65,15 @@ class GrouperCreateView(CreateView):
         self.object.author=self.request.user;
         self.object.save()
         #tag_save.send(sender=ArticleCreateView,  parent = self.object, tag=form.cleaned_data.get('tag'))
-        return HttpResponseRedirect('/main/')
+        return HttpResponseRedirect('/')
     
     
     
 class ArticleUpdateView(UpdateView):
     model = get_model('epapyrus', 'Article')
-    template_name = 'epapyrus/article_add.html'
+    template_name = 'epapyrus/article_update.html'
     
     form_class = forms.CreateArticle
-    #initial = {'tag': 1 }
- 
     
         
     def get_initial(self):
@@ -78,7 +88,7 @@ class ArticleUpdateView(UpdateView):
         
     
     def form_valid(self, form):
-        print form.cleaned_data.get('tag')
+        
         self.object = form.save(commit=False)
         self.object.author=self.request.user;
         self.object.save()
@@ -89,7 +99,7 @@ class ArticleUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ArticleUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['teaser'].widget.attrs['class'] = 'teaser'
-        
+        context['images'] =  self.object.article_images.all()
         return context
 
 
@@ -99,7 +109,7 @@ class ArticleDeleteView(DeleteView):
     template_name = 'epapyrus/article_delete.html'
     
     form_class = forms.CreateArticle
-    success_url = '/main/'
+    success_url = '/'
  
  
     def get_object(self, queryset=None):
