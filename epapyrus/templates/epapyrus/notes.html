@@ -1,0 +1,36 @@
+{% extends "epapyrus/main_base.html" %}
+
+{% block quote %}
+<article class="quote">
+    <p class="quote">
+    “Fine, Java MIGHT be a good example of what a programming language should be like. But Java applications are good examples of what applications SHOULDN’T be like.”
+    </p>
+    <p class="quote_author">
+        Noname
+    </p>    
+</article>
+{% endblock %}
+{%block blog %}
+
+<h2> {{ parent.title }} - notatki</h2>
+<p>
+<a href="{% url article parent.id %}"> powrót do strony poprzedniej </a>
+</p>
+<table style="text-align:center; width:1050px;border-collapse:collapse;">
+<tr><th style="width:150px">Tytuł</th><th style="width:100px">Data edycji</th><th style="width:100px">Autor</th><th>Notatka</th><th style="width:40px"></th><th style="width:40px"></th></tr>
+{% for i in object_list %}
+<tr> 
+    <td style="border:1px solid #e3e3e3;"> {{i.title}}</td>
+    <td style="border:1px solid #e3e3e3;"> {{i.modification_datetime|date:"h:i d-m-Y" }}</td>
+    <td style="border:1px solid #e3e3e3;"> {{i.author}}</td>
+    <td style="border:1px solid #e3e3e3;"> {{i.get_teaser}}</td>
+    <td style="border:1px solid #e3e3e3;"> <a href="{% url note_update  i.id %}">edit </a></td>
+    <td style="border:1px solid #e3e3e3;"> <a href="{% url note_delete i.id %}">delete</a> </td>
+ <tr>   
+{% endfor %} 
+</table>
+
+<p>
+<a href="{% url note_create 'article' parent.id %}"> Create Note</a>
+</p>
+{% endblock %}
