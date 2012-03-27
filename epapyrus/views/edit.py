@@ -16,13 +16,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404  
 from django.core.urlresolvers import reverse
 
-
+from synergy.templates.regions.views import RegionViewMixin
 
 tag_save = django.dispatch.Signal(providing_args=['parent','tag'])
 obj_delete = django.dispatch.Signal(providing_args=['obj'])
 
 
-class ArticleImageCreateView(CreateView):
+class ArticleImageCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'ArticleImage')
     template_name = 'epapyrus/image_add.html'
     form_class = forms.AddImage
@@ -35,12 +35,10 @@ class ArticleImageCreateView(CreateView):
         
         return HttpResponseRedirect("/article/%s/edit/"% self.kwargs['article'])
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'Article')
-    template_name = 'epapyrus/article_add.html'
     form_class = forms.CreateArticle
-   
- 
+
     #to powinno byc w inicie, ale nie moge zwalczyc gdzie jest tworzone form
     def get_context_data(self, **kwargs):
         context = super(ArticleCreateView, self).get_context_data(**kwargs)
@@ -55,12 +53,10 @@ class ArticleCreateView(CreateView):
         tag_save.send(sender=ArticleCreateView,  parent = self.object, tag=form.cleaned_data.get('tag'))
         return HttpResponseRedirect("/article/%s/" % self.object.id)
         
-class GrouperCreateView(CreateView):
+class GrouperCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus','Grouper')
-    template_name = 'epapyrus/grouper_add.html'
     
     form_class = forms.CreateGrouper
-    
     
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -71,10 +67,8 @@ class GrouperCreateView(CreateView):
     
     
     
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(RegionViewMixin, UpdateView):
     model = get_model('epapyrus', 'Article')
-    template_name = 'epapyrus/article_update.html'
-    
     form_class = forms.CreateArticle
     
         
@@ -106,9 +100,8 @@ class ArticleUpdateView(UpdateView):
 
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(RegionViewMixin, DeleteView):
     model = get_model('epapyrus', 'Article')
-    template_name = 'epapyrus/article_delete.html'
     
     form_class = forms.CreateArticle
     success_url = '/'

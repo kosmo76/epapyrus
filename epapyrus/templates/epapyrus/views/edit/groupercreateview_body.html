@@ -1,12 +1,3 @@
-{% extends "epapyrus/main_base.html" %}
-
-
-
-{% block blog %}
-
-
-
-
 <form action="" method="post">
 
 {% for field in form %}
@@ -20,11 +11,9 @@
 
 {% endfor %}
 
-
-
-<p><input type="submit" value="Save article" /></p>
+<p><input type="submit" value="Save grouper" /></p>
 {% csrf_token %}
 
 </form>
 
-{% endblock %}
+

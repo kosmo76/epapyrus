@@ -15,7 +15,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'epapyrus/login.html'}),
                        url(r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': ''},name='logout'),
 
-                       url(r'^tag/(?P<tag_code>programming|cpp|c|python)/$',listing.TagView.as_view(), name="tag_view"),
+                       url(r'^tag/(?P<tag_code>\w+)/$', listing.TagView.as_view(), name="tag_view"),
                        url(r'^books/$',listing.BookView.as_view(), name="book_view"),
                        url(r'^image/(?P<article>\d+)/add/$',login_required(edit.ArticleImageCreateView.as_view()), name="add_image"),
                        url(r'^note/(?P<model_name>article|grouper)/(?P<obj_id>\d+)/create$',login_required(edit.NoteCreateView.as_view()), name="note_create"),

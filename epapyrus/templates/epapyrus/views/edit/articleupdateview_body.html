@@ -1,10 +1,13 @@
-{% extends "epapyrus/main_base.html" %}
+<form action="" method="post">
+<div id="images" style="color:black">
+<table>
+{% for  i in images %}
+<tr><td>{{i.attachment}}</td><td> <img src="{{i.attachment.url}}" style="width:30px;"></td></tr>
+{% endfor %}
+</table>
+<a href="{% url add_image object.id %}"> add image </a>
+</div>
 
-
-
-{% block blog %}
-
-<form action="" method="post" enctype="multipart/form-data">
 
 {% for field in form %}
     <div style="margin-top:30px;">
@@ -24,4 +27,3 @@
 
 </form>
 
-{% endblock %}

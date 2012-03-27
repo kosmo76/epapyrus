@@ -6,10 +6,9 @@ from synergy.templates.regions.views import RegionViewMixin
 
 class ArticleDetailView(RegionViewMixin ,DetailView,):
     model = get_model('epapyrus','Article')
-    #template_name = 'epapyrus/article.html'
     
     def get_context_data(self, *args, **kwargs):    
         data = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
-        print data
         return data
         
+

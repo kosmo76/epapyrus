@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="keywords" content=""/>
+  <meta name="description" content=""/>
+  <meta name="author" content="Kosmo from Open Synergy"/>
+  
+  <link href="{{ STATIC_URL }}bookstyle/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="{{ STATIC_URL }}bookstyle/css/code.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+  {% block meta%} {% endblock %}
+  <title>OpenSynergy</title>
+  
+  </head>
+
+<body>
+  {% block body %}
+  {% endblock %}
+</body>
+</html>
