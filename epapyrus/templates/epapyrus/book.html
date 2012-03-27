@@ -19,10 +19,10 @@
  {% for book in object_list%}
  <h2> {{ book.title }} </h2>
    <ol>
-   {% for chapter in book.groupers.all %}
+   {% for chapter in book.get_groupers %}
       <li> {{ chapter.title }} 
             <ul>
-            {% for article in chapter.articles.all %}
+            {% for article in chapter.get_articles%}
               <li> {{ article.title }} </li>
             {% endfor %}
             </ul>

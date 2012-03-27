@@ -38,3 +38,10 @@ class AddImage(forms.ModelForm):
         model = models.ArticleImage
         exclude = ('article')
     
+    
+class CreateNoteForm(forms.ModelForm):
+    
+    class Meta:
+        model = models.Note
+        exclude = ('author', 'content_type','object_id')
+            

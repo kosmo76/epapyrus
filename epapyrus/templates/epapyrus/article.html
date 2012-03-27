@@ -28,6 +28,9 @@
                 <p class="more"> 
                     <span class="article_nav"> <a href="{% url article_update object.id %}"> Edit </a></span> 
                     <span class="article_nav">  <a href="{% url article_delete object.id %}"> Delete</a></span>
+                    <span class="article_nav">  <a href="{% url notes_view 'article' object.id %}"> View Notes</a>
+                     </span>
+                     
                 </p>
                 {% endif %}
             {% endif %}
@@ -48,6 +51,8 @@
                 <p class="more"> 
                     <span class="article_nav"> <a href="{% url article_update object.id %}"> Edit </a></span> 
                     <span class="article_nav">  <a href="{% url article_delete object.id %}"> Delete</a></span>
+                   
+                    
                 </p>
                 {% endif %}
             {% endif %}

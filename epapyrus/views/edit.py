@@ -12,7 +12,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.decorators import login_required
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404  
+from django.core.urlresolvers import reverse
 
 
 
@@ -130,7 +132,82 @@ class ArticleDeleteView(DeleteView):
            return self.delete(*args, **kwargs)
 
 
+class NoteCreateView(CreateView):
+    model = get_model('epapyrus', 'Note')
+    template_name = 'epapyrus/note_add.html'
+    
+    form_class = forms.CreateNoteForm
+    
+    def _get_content_object(self, model_name, obj_id):
+        content_type = ContentType.objects.get(app_label="epapyrus", model=model_name)
+        try:
+            return content_type.get_object_for_this_type(id=obj_id)
+            
+        except ObjectDoesNotExist:
+            raise Http404
+         
+    def get_initial(self):
+        super(NoteCreateView, self).get_initial()
+        
+        self.object_for_note = self._get_content_object(self.kwargs['model_name'], self.kwargs['obj_id'])
+        
+        if self.object_for_note.author != self.request.user:
+            raise Http404
+        return self.initial
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(NoteCreateView, self).get_context_data(*args, **kwargs)
+        context['parent'] = self.object_for_note
+        return context
+        
+    def form_valid(self, form):
+        
+        
+        self.object = form.save(commit=False)
+        self.object.author=self.request.user;
+        self.object.content_type = ContentType.objects.get_for_model(self.object_for_note)
+        self.object.object_id = self.object_for_note.id
+        self.object.save()
+        return HttpResponseRedirect("/%s/%s/" % (self.object.content_type, self.object.object_id) )    
 
+
+class NoteUpdateView(UpdateView):
+    model = get_model('epapyrus', 'Note')
+    template_name = 'epapyrus/note_add.html'
+    
+    form_class = forms.CreateNoteForm
+ 
+    
+    def form_valid(self, form):
+        self.object.note = form.cleaned_data.get('note')
+        self.object.title = form.cleaned_data.get('title')
+        self.object.save()
+        return HttpResponseRedirect("/notes/%s/%s/" % (self.object.content_type, self.object.object_id) )    
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(NoteUpdateView, self).get_context_data(*args, **kwargs)
+        context['parent'] = self.object.content_object
+        return context
+
+class NoteDeleteView(DeleteView):
+    model = get_model('epapyrus', 'Note')
+    template_name = 'epapyrus/article_delete.html'
+   
+   
+    def get_success_url(self):
+        return "/notes/%s/%s/" % (self.note_object.content_type, self.note_object.object_id)  
+     
+     
+    def post(self, *args, **kwargs):
+        self.note_object = self.get_object();
+        if args[0].POST.has_key('Cancel'):
+           return HttpResponseRedirect(self.get_success_url());
+        else:
+           
+           return self.delete(*args, **kwargs)    
+           
+           
+           
 #get tag signal after save
 @receiver(tag_save)
 def save_tag_content(sender, **kwargs):

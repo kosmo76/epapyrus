@@ -21,8 +21,6 @@ def image_save(instance, filename):
   
 
 
-
-
 # Create your models here.
 
 class Grouper(models.Model):
@@ -41,7 +39,12 @@ class Grouper(models.Model):
     def __unicode__(self):
         return u"%s" % self.title
     
-    
+    def get_articles(self):
+        return get_model('epapyrus','Article').objects.filter(grouper__exact = self)
+        
+    def get_groupers(self):
+        return get_model('epapyrus','Grouper').objects.filter(parent__exact = self)
+        
 class Article(models.Model):
     
     author = models.ForeignKey('auth.User', verbose_name="Author")
@@ -70,21 +73,33 @@ class Article(models.Model):
     
     #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
-        napis = self.extras + self.body
+        napis = self.body
+        
         regexp = re.compile(r"\${1,2}([^$]+)\${1,2}",re.UNICODE)
+        
+        extras = self.extras.replace('locale://',settings.MEDIA_URL)
+        print extras
         
         r = regexp.search(napis)
         dane = regexp.finditer(napis)
         start=0
-        
         nowy=""
+        
+        # 'codehilite(force_linenos=True)'
         for i in  dane:
             end=i.start()
-            nowy += markdown.markdown( self.extras+napis[start:end] ,['codehilite(force_linenos=True)'])
+            if start > 0:
+                 nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])[3:-4]
+                 print nowy
+            else:
+                nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])
             nowy += napis[i.start():i.end()]+" "
             start=i.end()
-        nowy += markdown.markdown(self.extras+napis[start:],['codehilite(force_linenos=True)'])
-        nowy = nowy.replace('locale://',settings.MEDIA_URL)
+        if (start >0):
+            nowy += markdown.markdown(extras+napis[start:],['codehilite'])[3:-4]
+        else:
+            nowy += markdown.markdown(extras+napis[start:],['codehilite'])
+        #nowy = nowy.replace('locale://',settings.MEDIA_URL)
         return nowy
 
         
@@ -119,5 +134,21 @@ class ArticleImage(models.Model):
     title = models.CharField(max_length=255, verbose_name="Title", blank=True)
     article = models.ForeignKey('Article', verbose_name = "Image", related_name="article_images")
     attachment = models.FileField(storage = file_system_storage, upload_to = image_save)
+ 
+#model reprezentujacy notatke do artykulu lub groupera
+class Note(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Title", blank=True)
+    modification_datetime = models.DateTimeField(auto_now = True, verbose_name="Modification time")
+    author = models.ForeignKey('auth.User', verbose_name="Author")
+    note =  models.TextField(verbose_name="Note")
+    content_type = models.ForeignKey(ContentType, limit_choices_to={'model__in':['article','grouper']})
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
     
-    
+    def get_teaser(self):
+        tmp = self.note.split()
+        result =  " ".join([ i for i in tmp[0:20]])
+        if len(tmp) > 19:
+            result = result + " (...) "
+        
+        return result
