@@ -113,6 +113,11 @@ ul.book_articles li a
    font-size: 1.9em;
 }
 
+.article_header_front >h1  a
+{
+   color: black;
+}
+
 .article_header p
 {
   padding-top:10px;
@@ -170,6 +175,114 @@ div.full_article
     padding-top:10px;
 }
 
+
+/* NOTES styles */
+
+.note_header
+{
+    border-top:1px solid #D0D0D0;
+    border-bottom:1px solid #D0D0D0;
+    padding-top:10px;
+    padding-bottom:10px;
+    margin-bottom:15px;
+    
+     
+}
+
+.note_header > h1
+{
+   font-weight:100;
+   font-size: 1.9em;
+}
+
+.note_header_front >h1  a
+{
+   color: black;
+   text-decoration:none;
+}
+
+.note_header p
+{
+  padding-top:10px;
+  font-size:0.8em;
+  font-style:italic;
+}
+
+.note_header_front
+{
+    border-bottom:1px solid #D0D0D0;
+    padding-top:15px;
+    padding-bottom:10px;
+    margin-bottom:7px;
+    
+     
+}
+
+.note_header_front > h1
+{
+   font-size: 1.0em;
+}
+.note_header_front p
+{
+  padding-top:8px;
+  font-size:0.8em;
+  font-style:italic;
+}
+
+.note_teaser
+{
+    margin-bottom:10px;
+    font-size:0.9em;
+    line-height:1.5em;
+}
+
+.note_footer
+{
+  margin-bottom:20px;    
+}
+
+.note_header_front a
+{
+    text-decoration:none;
+    font-size:0.9em;
+    color:#3A95CD;
+}
+
+.note_footer a
+{
+    text-decoration:none;
+    font-size:0.9em;
+    padding-right:30px;
+    color:#3A95CD;
+}
+
+h2.note_article a
+{
+    text-decoration:none;
+    color:black;
+}
+/* end note style */
+div.full_article
+{
+  font-size:0.95em;
+  line-height:1.5em;
+}
+
+.full_article >h2
+{
+    font-size:1.3em;
+    font-weight:100;
+    padding-bottom:10px;
+    padding-top:25px;
+}
+
+.full_article >h3
+{
+    font-size:1.1em;
+   
+    padding-bottom:10px;
+    padding-top:10px;
+}
 .codehilite > pre
 {
   font-size:0.9em;  
@@ -208,4 +321,67 @@ div.full_article
 .article_nav
 {
   padding-right:30px;    
+}
+
+.not_published_bg
+{
+  background-color: #FFF8F8;    
+}
+
+.not_promoted_bg
+{
+  background-color: #F8F8FF;    
+}
+
+/* ADD and EDIT form style */
+
+textarea, #id_title
+{
+    width:650px;
+}
+textarea.teaser
+{
+height:150px;
+} 
+
+
+#id_body
+{
+  height:450px;    
+}
+
+#id_extras
+{
+  height:250px;    
+}
+
+div#images > h3
+{
+   font-weight:100;  
+   font-size:1.1em;
+}
+
+
+div#images > a
+{
+  text-decoration:none;
+  color:#8CC1E2;
+  font-size:0.9em;
+  
+}
+.image_table th
+{
+   font-weight:400;
+   width:50%;
+   background-color:#f0f0f0;
+   font-size:0.9em;
+   
+ 
+}
+
+
+.image_table td
+{
+ font-size:0.8em;
+ text-align:center;
 }

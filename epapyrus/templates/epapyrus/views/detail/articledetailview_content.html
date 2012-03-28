@@ -1,7 +1,7 @@
 {% load markup %}
 
-
-<div class="article">
+{% if object.is_published or user.is_authenticated and user == object.author %}
+<div class="article {% if not object.is_published %} not_published_bg {% endif %}">
 
             <div class="article_header">
             <h1> {{ object.title }}</h1>
@@ -20,10 +20,12 @@
                 <div  class="author_article_footer"> 
                     <span class="article_nav"> <a href="{% url article_update object.id %}"> Edit </a></span> 
                     <span class="article_nav">  <a href="{% url article_delete object.id %}"> Delete</a></span>
-                    <span class="article_nav">  <a href="{% url notes_view 'article' object.id %}"> View Notes</a>
-                     </span>
-                     
+                    <span class="article_nav">  <a href="{% url add_note 'article' object.id %}"> Add Note</a></span>
+                    {% if object.has_notes %}
+                    <span class="article_nav">  <a href="{% url notes_view 'article' object.id %}"> View Notes</a></span>
+                    {% endif %}
                 </div>
              {% endif %}
             
 </div>
+{% endif %}

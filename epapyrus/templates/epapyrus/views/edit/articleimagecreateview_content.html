@@ -1,4 +1,6 @@
-<form action="" method="post">
+{% load markup %}
+
+<form action="" method="post" enctype="multipart/form-data">
 
 {% for field in form %}
     <div style="margin-top:30px;">
@@ -13,7 +15,7 @@
 
 
 
-<p><input type="submit" value="Save grouper" /></p>
+<p><input type="submit" value="Save article" /></p>
 {% csrf_token %}
 
 </form>

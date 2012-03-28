@@ -70,6 +70,8 @@ class Article(models.Model):
         article_tag= models.get_model('epapyrus', 'PrimaryTagItem').objects.filter(content_type__pk__exact=article_model.id, object_id__exact=self.id).values_list('tag', flat=True);
         return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=article_tag)
     
+    def has_notes(self):
+        return True
     
     #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
@@ -152,3 +154,6 @@ class Note(models.Model):
             result = result + " (...) "
         
         return result
+    def get_safe(self):
+        return markdown.markdown( self.note )
+        

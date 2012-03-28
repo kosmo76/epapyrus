@@ -21,6 +21,12 @@
     margin-bottom:2px;
 }
 
+#header > h1 >a
+{
+   text-decoration: none;
+   color:#000000;
+ }
+
 #navigation
 {
     border-top:1px solid #D0D0D0;

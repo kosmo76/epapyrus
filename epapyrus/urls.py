@@ -6,19 +6,19 @@ from epapyrus.views  import simple, edit, listing, detail
 
 urlpatterns = patterns('',
                        url(r'^$', listing.ArticlesView.as_view(), name='main'),
-                       url(r'^article/add/$', login_required(edit.ArticleCreateView.as_view()), name='article_add'),
+                       url(r'^article/add/$', login_required(edit.ArticleCreateView.as_view()), name='add_article'),
                        url(r'^article/(?P<pk>\d+)/$', detail.ArticleDetailView.as_view(), name='article'),
                        url(r'^article/(?P<pk>\d+)/edit/$', login_required(edit.ArticleUpdateView.as_view()), name='article_update'),
                        url(r'^article/(?P<pk>\d+)/delete/$', login_required(edit.ArticleDeleteView.as_view()), name='article_delete'),
                        
-                       url(r'^grouper/add$', login_required(edit.GrouperCreateView.as_view()), name='grouper_add'),
+                       url(r'^grouper/add$', login_required(edit.GrouperCreateView.as_view()), name='add_grouper'),
                        url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'epapyrus/login.html'}),
                        url(r'^logout/$', 'django.contrib.auth.views.logout',{'next_page': ''},name='logout'),
 
                        url(r'^tag/(?P<tag_code>\w+)/$', listing.TagView.as_view(), name="tag_view"),
                        url(r'^books/$',listing.BookView.as_view(), name="book_view"),
                        url(r'^image/(?P<article>\d+)/add/$',login_required(edit.ArticleImageCreateView.as_view()), name="add_image"),
-                       url(r'^note/(?P<model_name>article|grouper)/(?P<obj_id>\d+)/create$',login_required(edit.NoteCreateView.as_view()), name="note_create"),
+                       url(r'^note/(?P<model_name>article|grouper)/(?P<obj_id>\d+)/create$',login_required(edit.NoteCreateView.as_view()), name="add_note"),
                        url(r'^note/(?P<pk>\d+)/update$',login_required(edit.NoteUpdateView.as_view()), name="note_update"),
                        url(r'^note/(?P<pk>\d+)/delete$',login_required(edit.NoteDeleteView.as_view()), name="note_delete"),
                        url(r'^notes/(?P<model_name>article|grouper)/(?P<obj_id>\d+)/$',login_required(listing.ShowNotes.as_view()), name="notes_view"),

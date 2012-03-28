@@ -9,6 +9,9 @@ class ArticleDetailView(RegionViewMixin ,DetailView,):
     
     def get_context_data(self, *args, **kwargs):    
         data = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
+       
+       #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        data['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return data
         
 

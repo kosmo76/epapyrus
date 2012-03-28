@@ -1,13 +1,7 @@
-{% extends "epapyrus/main_base.html" %}
-
-
-
-{% block blog %}
-
+{% load markup %}
 
 <form action="" method="post">
 
-<a href="{% url notes_view 'article' parent.id %}">powrót </a>
 {% for field in form %}
     <div style="margin-top:30px;">
         <span style="color:red">{{ field.errors}}</span>
@@ -21,9 +15,9 @@
 
 
 
-<p><input type="submit" value="Save note" /></p>
+<p><input type="submit" value="Save article" /></p>
 {% csrf_token %}
 
 </form>
 
-{% endblock %}
+

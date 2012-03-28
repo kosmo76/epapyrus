@@ -1,0 +1,24 @@
+{% load markup %}
+<h2 class="note_article"> <a href="{% url article parent.id %}">{{ parent.title }}</a> - notatki</h2>
+{% for i in object_list %}
+
+    <div class="note">
+                <div class="note_header_front">
+                    <h1> {{i.title}} </h1>
+                    <p class="note_info">
+                    {{ i.modification_datetime|date:"Y-m-d" }} przez <a href="#">{{i.author}}</a> 
+                    </p>
+                </div>
+                <p class="note_teaser">
+                {{ i.get_safe|safe}}
+                </p>
+                
+                <div  class="note_footer"> 
+                    <span class="note_nav"> <a href="{% url note_update i.id %}"> Edit </a></span> 
+                    <span class="note_nav">  <a href="{% url note_delete i.id %}"> Delete</a></span>
+                     </span>
+                </div>
+            </div>
+ 
+{% endfor %}
+</p>

@@ -21,9 +21,12 @@ class ArticlesView(RegionViewMixin,ListView ):
     
     
     def get_context_data(self, *args, **kwargs):
-        ctx = super(ArticlesView, self).get_context_data(*args, **kwargs)
-        ctx['title'] = 'Promoted Articles'
-        return ctx
+        context = super(ArticlesView, self).get_context_data(*args, **kwargs)
+        
+        #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        
+        return context
 
 class TagView(RegionViewMixin, ListView):
     
@@ -44,8 +47,8 @@ class BookView(RegionViewMixin, ListView):
         context['title'] = "Books"
         return context 
  
-class ShowNotes(ListView):
-    template_name = 'epapyrus/notes.html'
+class ShowNotes(RegionViewMixin,ListView):
+    
      
     def _get_content_objects(self, model_name, obj_id):
         content_type = ContentType.objects.get(app_label="epapyrus", model=model_name)
@@ -63,6 +66,7 @@ class ShowNotes(ListView):
         parent_model  = ContentType.objects.get(app_label="epapyrus", model=self.kwargs['model_name'])
         context['parent'] = parent_model.model_class().objects.get(id__exact=self.kwargs['obj_id'])
         context['parent_type'] = parent_model
-
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        
         return context 
     

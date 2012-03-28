@@ -43,6 +43,8 @@ class ArticleCreateView(RegionViewMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ArticleCreateView, self).get_context_data(**kwargs)
         context['form'].fields['teaser'].widget.attrs['class'] = 'teaser'
+        #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return context
 
 
@@ -96,6 +98,8 @@ class ArticleUpdateView(RegionViewMixin, UpdateView):
         context = super(ArticleUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['teaser'].widget.attrs['class'] = 'teaser'
         context['images'] =  self.object.article_images.all()
+         #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return context
 
 
@@ -113,6 +117,12 @@ class ArticleDeleteView(RegionViewMixin, DeleteView):
             raise Http404
         return obj
    
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDeleteView, self).get_context_data(**kwargs)
+        context['region_postfixes'] = {'content': 'delete'}
+        return context
+        
+        
     # znowu klopot bo delete robi redirecta co niekoniecznie musi byc poprawne
     # a wiec najpier wysgnal a potem 
     
@@ -125,9 +135,9 @@ class ArticleDeleteView(RegionViewMixin, DeleteView):
            return self.delete(*args, **kwargs)
 
 
-class NoteCreateView(CreateView):
+class NoteCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'Note')
-    template_name = 'epapyrus/note_add.html'
+    
     
     form_class = forms.CreateNoteForm
     
@@ -151,6 +161,8 @@ class NoteCreateView(CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(NoteCreateView, self).get_context_data(*args, **kwargs)
         context['parent'] = self.object_for_note
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        
         return context
         
     def form_valid(self, form):
@@ -164,9 +176,9 @@ class NoteCreateView(CreateView):
         return HttpResponseRedirect("/%s/%s/" % (self.object.content_type, self.object.object_id) )    
 
 
-class NoteUpdateView(UpdateView):
+class NoteUpdateView(RegionViewMixin, UpdateView):
     model = get_model('epapyrus', 'Note')
-    template_name = 'epapyrus/note_add.html'
+    
     
     form_class = forms.CreateNoteForm
  
@@ -180,17 +192,24 @@ class NoteUpdateView(UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super(NoteUpdateView, self).get_context_data(*args, **kwargs)
         context['parent'] = self.object.content_object
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        
         return context
 
-class NoteDeleteView(DeleteView):
+class NoteDeleteView(RegionViewMixin, DeleteView):
     model = get_model('epapyrus', 'Note')
-    template_name = 'epapyrus/article_delete.html'
+    
    
    
     def get_success_url(self):
         return "/notes/%s/%s/" % (self.note_object.content_type, self.note_object.object_id)  
      
-     
+    def get_context_data(self, **kwargs):
+        context = super(NoteDeleteView, self).get_context_data(**kwargs)
+        context['region_postfixes'] = {'content': 'delete'}
+        return context
+    
+    
     def post(self, *args, **kwargs):
         self.note_object = self.get_object();
         if args[0].POST.has_key('Cancel'):

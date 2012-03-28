@@ -1,12 +1,12 @@
 <h2 class="sidebar_menu_title"> Kategorie </h2>
+
+    {% if tags %}
     <ul class="sidebar_menu">
-        <li> <a href="#"> Programowanie </a></li>
-        <li> <a href="#"> Dokumentacja </a></li>
-        <li> <a href="#"> C++ </a></li>
-        <li> <a href="#"> Python </a></li>
-        <li> <a href="#"> Fizyka </a></li>
-        <li> <a href="#"> Symulacje </a></li>
+        {% for i in tags %}
+        <li> <a href="{% url tag_view i.code %}"> {{i.name}}</a></li>
+         {% endfor %}
     </ul>
+    {% endif %}
             
 <h2 class="sidebar_menu_title next"> Używamy </h2>
     <ul class="sidebar_menu">
