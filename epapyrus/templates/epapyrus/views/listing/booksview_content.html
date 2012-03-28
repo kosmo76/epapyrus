@@ -3,9 +3,9 @@
 {% for i in object_list %}
 
     {% if i.is_published and i.is_promoted or user.is_authenticated and user == i.author%}
-    <div class="article {% if not i.is_published %} not_published_bg {% else %} {%if not i.is_promoted %}not_promoted_bg %} {% endif %} {% endif %}">
+    <div class="article {% if not i.is_published %} not_published_bg  {% endif %}">
                 <div class="article_header_front">
-                    <h1> <a href="{% url article i.id %}">{{i.title}} </a></h1>
+                    <h1> <a href="{% url grouper_view i.id %}">{{i.title}} </a></h1>
                     <p class="article_info">
                     {{ i.creation_datetime|date:"Y-m-d" }} przez <a href="#">{{i.author}}</a> w 
                     {% for tag in i.get_tag %}
@@ -14,8 +14,13 @@
                     </p>
                 </div>
                 <p class="teaser">
-                {{ i.teaser }}
+                {{ i.note }}
                 </p>
             </div>
     {% endif %}
+
 {% endfor %}
+
+{% if not object_list %}
+ Brak artykułów
+{% endif %}

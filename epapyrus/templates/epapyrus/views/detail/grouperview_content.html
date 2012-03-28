@@ -1,0 +1,30 @@
+{% load markup %}
+
+<div class="article ">
+                <div class="article_header">
+                    <h1> {{object.title}} {% if user.is_authenticated and user == object.author%} <a href="{% url grouper_edit object.id %}" class="chapter_edit"> edit </a>{% endif %} </h1>
+                    <p class="article_info">
+                    {{ object.creation_datetime|date:"Y-m-d" }} przez <a href="#">{{object.author}}</a> w 
+                    {% for tag in object.get_tag %}
+                        <a href="{% url tag_view tag.code %}"> <span style="padding-right:10px;">{{tag}} </span></a>  
+                    {% endfor %}
+                    </p>
+                </div>
+                
+                <p>
+                 <ol class="book_toc_front">
+                {% for chapter in object.get_groupers %}
+                    <li> {{ chapter.title }} {% if user.is_authenticated and user == chapter.author%} <a href="{% url grouper_edit chapter.id %}" class="chapter_edit"> edit </a>{% endif %}
+                    <ul class="book_articles_front">
+                        {% for article in chapter.get_articles%}
+                        {% if article.is_published or user.is_authenticated and user == article.author %}
+                            <li {% if not article.is_published %} class="not_published_bg" {%endif%} > <a href="{% url article_book article.id object.id%}">{{ article.title }} </a></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </li>
+      
+                {% endfor %}
+                </ol>
+                </p>
+</div>

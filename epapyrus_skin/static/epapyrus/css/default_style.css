@@ -31,7 +31,7 @@ h2.sidebar_menu_title
 
 ul.sidebar_menu a
 {
-    background-image: url('../img03.gif');
+    background-image: url('../images/img03.gif');
     background-repeat:no-repeat;
     background-position: left 50%;
     margin-left:10px;
@@ -42,7 +42,7 @@ ul.sidebar_menu a
 
 ul.sidebar_menu a:hover
 {
-    background-image: url('../img02_h.gif');
+    background-image: url('../images/img02_h.gif');
     color: #1A1A1A;
 }
 
@@ -58,10 +58,16 @@ ul.sidebar_menu a:hover
   margin-bottom:10px;
 }
 
+.sidebar_book_title a
+{
+    color:black;
+    text-decoration:none;
+}
+
 ol.sidebar_book_toc
 {
   margin-left:20px;    
-  margin-right:10px;
+    margin-right:10px;
 }
 
 ol.sidebar_book_toc > li
@@ -69,22 +75,26 @@ ol.sidebar_book_toc > li
   font-size:0.9em;
   padding-bottom:9px;
   padding-top:10px;
+  color: #D54F2E;
 }
-.sidebar_book_toc >li > a
+ol.sidebar_book_toc >li > a
 {
   text-decoration:none;
-   color: #D54F2E;
+  color: #D54F2E;
 }
-
+ul.book_articles
+{
+  margin-top:8px;    
+}
 ul.book_articles li
 {
-    background-image: url('../img03.gif');
+    background-image: url('../images/img03.gif');
     background-repeat:no-repeat;
     background-position: left 50%;
     margin-left:10px;
     padding-left:20px;
-    padding-bottom:6px;
-    font-size:0.8em;
+    padding-bottom:5px;
+/*     font-size:0.8em; */
 }
 
 ul.book_articles li a
@@ -385,3 +395,29 @@ div#images > a
  font-size:0.8em;
  text-align:center;
 }
+
+/* BOOK front page TOC style */
+ol.book_toc_front
+{
+    margin-top:20px;
+    list-style-position:inside;
+}
+
+ol.book_toc_front > li
+{
+  font-weight:600;    
+}
+
+ul.book_articles_front
+{
+    font-weight:400;
+    margin-left:20px;
+    padding-top:5px;
+    padding-bottom:10px;
+}
+
+.chapter_edit
+{
+    font-size:0.6em;
+}
+

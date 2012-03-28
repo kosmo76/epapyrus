@@ -44,6 +44,11 @@ class Grouper(models.Model):
         
     def get_groupers(self):
         return get_model('epapyrus','Grouper').objects.filter(parent__exact = self)
+    
+    def get_tag(self):
+        grouper_model = ContentType.objects.get(app_label="epapyrus", model="grouper")
+        grouper_tag= models.get_model('epapyrus', 'PrimaryTagItem').objects.filter(content_type__pk__exact=grouper_model.id, object_id__exact=self.id).values_list('tag', flat=True);
+        return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=grouper_tag)
         
 class Article(models.Model):
     
@@ -71,7 +76,9 @@ class Article(models.Model):
         return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=article_tag)
     
     def has_notes(self):
-        return True
+        article_model = ContentType.objects.get(app_label="epapyrus", model="article")
+        note_model = get_model('epapyrus', 'Note').objects.filter(content_type__pk__exact=article_model.id, object_id__exact=self.id).exists()
+        return note_model
     
     #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
@@ -147,6 +154,7 @@ class Note(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     
+    #chyba nie bedzie potrzebne jednak
     def get_teaser(self):
         tmp = self.note.split()
         result =  " ".join([ i for i in tmp[0:20]])

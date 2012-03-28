@@ -1,15 +1,15 @@
  <ul>
-    <li> <a href="#">EPAPYRUS </a></li>
-    <li> <a href="#">ARTYKUŁY </a></li>
-    <li> <a href="#">KSIĄŻKI </a></li>
+    <li> <a href="{% url main %}">HOME</a></li>
+    <li> <a href="{% url main %}">ARTICLES</a></li>
+    <li> <a href="{% url books %}">BOOKS </a></li>
     <li> <a href="#">INFO </a></li>
-    <li> <a href="#">KONTAKT </a></li>
+    <li> <a href="#">CONTACT</a></li>
 </ul>
         
 {% if user.is_authenticated %}       
 <ul class="admin_menu">
-    <li> <a href="{% url add_article %}">NOWY  ARTYKUŁ</a></li>
-    <li> <a href="{% url add_grouper %}">NOWY GROUPER</a></li>
+    <li> <a href="{% url add_article %}">ADD ARTICLE</a></li>
+    <li> <a href="{% url add_grouper %}">ADD GROUPER</a></li>
     <li> <a href="{% url logout %}"> LOGOUT </a></li>
 </ul>
 {% endif %}

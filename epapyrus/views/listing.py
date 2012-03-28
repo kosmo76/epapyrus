@@ -35,16 +35,18 @@ class TagView(RegionViewMixin, ListView):
       
     def get_context_data(self, *args, **kwargs):
         context = super(TagView, self).get_context_data(*args, **kwargs)
+        #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return context 
         
-class BookView(RegionViewMixin, ListView):
+class BooksView(RegionViewMixin, ListView):
     def get_queryset(self):
         return get_model('epapyrus','grouper').objects.filter(parent__exact=None)
       
     def get_context_data(self, *args, **kwargs):
-        context = super(BookView, self).get_context_data(*args, **kwargs)
-                
-        context['title'] = "Books"
+        context = super(BooksView, self).get_context_data(*args, **kwargs)
+        #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return context 
  
 class ShowNotes(RegionViewMixin,ListView):

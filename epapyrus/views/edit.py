@@ -103,6 +103,38 @@ class ArticleUpdateView(RegionViewMixin, UpdateView):
         return context
 
 
+class GrouperUpdateView(RegionViewMixin, UpdateView):
+    model = get_model('epapyrus', 'Grouper')
+    form_class = forms.CreateGrouper
+    
+        
+    def get_initial(self):
+        super(GrouperUpdateView, self).get_initial()
+    
+        if self.object.author != self.request.user:
+            raise Http404
+      
+        self.initial['tag']=self.object.get_tag().values_list('id',flat=True)
+    
+        return self.initial
+        
+    
+    def form_valid(self, form):
+        
+        self.object = form.save(commit=False)
+        self.object.author=self.request.user;
+        self.object.save()
+        tag_save.send(sender=GrouperCreateView,  parent = self.object, tag=form.cleaned_data.get('tag'))
+        return HttpResponseRedirect("/")    
+
+     #to powinno byc w inicie, ale nie moge zwalczyc gdzie jest tworzone 
+    def get_context_data(self, **kwargs):
+        context = super(GrouperUpdateView, self).get_context_data(**kwargs)
+         #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+        context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        return context
+
+
 
 class ArticleDeleteView(RegionViewMixin, DeleteView):
     model = get_model('epapyrus', 'Article')
