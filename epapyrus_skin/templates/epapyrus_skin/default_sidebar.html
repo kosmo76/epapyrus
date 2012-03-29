@@ -1,18 +1,19 @@
-<h2 class="sidebar_menu_title"> Kategorie </h2>
+<h2 class="sidebar_menu_title">Kategorie</h2>
+{% if tags %}
+<ul class="sidebar_menu">
+  {% for i in tags %}
+  <li><a href="{% url tag_view i.code %}">{{ i.name }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
 
-    {% if tags %}
-    <ul class="sidebar_menu">
-        {% for i in tags %}
-        <li> <a href="{% url tag_view i.code %}"> {{i.name}}</a></li>
-         {% endfor %}
-    </ul>
-    {% endif %}
-            
-<h2 class="sidebar_menu_title next"> Używamy </h2>
-    <ul class="sidebar_menu">
-        <li> <a href="#"> Django </a></li>
-        <li> <a href="#"> Markdown </a></li>
-        <li> <a href="#"> JQuery </a></li>
-        <li> <a href="#"> Synergy </a></li>
-        <li> <a href="#"> JMatx </a></li>
-    </ul>
+{% comment %}   
+<h2 class="sidebar_menu_title next">Używamy</h2>
+<ul class="sidebar_menu">
+  <li> <a href="#"> Django </a></li>
+  <li> <a href="#"> Markdown </a></li>
+  <li> <a href="#"> JQuery </a></li>
+  <li> <a href="#"> Synergy </a></li>
+  <li> <a href="#"> JMatx </a></li>
+</ul>
+{% endcomment %}
