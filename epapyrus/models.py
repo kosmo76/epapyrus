@@ -70,6 +70,20 @@ class Article(models.Model):
     def __unicode__(self):
         return u"%s" % self.title
 
+    def _find_parent(self, grouper):
+        k=grouper
+        if grouper.parent != None:
+            k = self._find_parent(grouper.parent)
+            
+        return k
+        
+        
+    def get_root(self):
+        if self.grouper != None:
+            w = self._find_parent(self.grouper)
+            return w
+        return None
+    
     def get_tag(self):
         article_model = ContentType.objects.get(app_label="epapyrus", model="article")
         article_tag= models.get_model('epapyrus', 'PrimaryTagItem').objects.filter(content_type__pk__exact=article_model.id, object_id__exact=self.id).values_list('tag', flat=True);
@@ -123,8 +137,9 @@ class PrimaryTagType(models.Model):
     
 class PrimaryTagItemManager(models.Manager):
     
-    def get_for_tag(self, tag):
-        result = get_model('epapyrus','PrimaryTagItem').objects.filter(tag__code__exact=tag)
+    def get_for_tag(self, tag, model='article', app='epapyrus'):
+        content_type = ContentType.objects.get(app_label=app, model=model)
+        result = get_model('epapyrus','PrimaryTagItem').objects.filter(tag__code__exact=tag, content_type=content_type)
         wynik = [ x.content_object for x in result ]
         return wynik
         
