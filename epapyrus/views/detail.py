@@ -10,8 +10,14 @@ class ArticleDetailView(RegionViewMixin ,DetailView):
     def get_context_data(self, *args, **kwargs):    
         data = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
        
-       #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
-        data['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        #wywal TOC do sidebatu - powinno bc get_objcet_or_404
+        if self.object.get_root() != None:
+            data['toc'] = self.object.get_root() # get_model('epapyrus','grouper').objects.get(pk__exact=self.kwargs['book_id'])
+            data['region_postfixes'] = {'sidebar': 'book'}
+        else:    
+            #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
+            data['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
+        
         return data
         
 class ArticleDetailBookView(RegionViewMixin ,DetailView):
@@ -21,7 +27,9 @@ class ArticleDetailBookView(RegionViewMixin ,DetailView):
         data = super(ArticleDetailBookView,self).get_context_data(*args, **kwargs)
        
        #wywal TOC do sidebatu - powinno bc get_objcet_or_404
-        data['toc'] = get_model('epapyrus','grouper').objects.get(pk__exact=self.kwargs['book_id'])
+       
+       
+        data['toc'] = self.object.get_root() # get_model('epapyrus','grouper').objects.get(pk__exact=self.kwargs['book_id'])
         data['region_postfixes'] = {'sidebar': 'book'}
         return data
 

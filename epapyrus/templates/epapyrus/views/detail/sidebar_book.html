@@ -1,12 +1,20 @@
 <h2 class="sidebar_book_title"> <a href="{% url grouper_view toc.id %}"> {{toc.title}} </a></h2>
 
         <ol class="sidebar_book_toc">
+                 <ul class="book_articles">
+                        {% for article in toc.get_articles%}
+                        {% if article.is_published or user.is_authenticated and user == article.author %}
+                            <li {% if not article.is_published %} class="not_published_bg" {%endif%} > <a href="{% url article article.id %}">{{ article.title }} </a></li>
+                        {% endif %}
+                        {% endfor %}
+                  </ul>
         {% for chapter in toc.get_groupers %}
+          
                     <li> {{ chapter.title }} 
                     <ul class="book_articles">
                         {% for article in chapter.get_articles%}
                         {% if article.is_published or user.is_authenticated and user == article.author %}
-                            <li {% if not article.is_published %} class="not_published_bg" {%endif%} > <a href="{% url article_book article.id toc.id%}">{{ article.title }} </a></li>
+                            <li {% if not article.is_published %} class="not_published_bg" {%endif%} > <a href="{% url article article.id %}">{{ article.title }} </a></li>
                         {%endif%}    
                         {% endfor %}
                     </ul>

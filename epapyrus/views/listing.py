@@ -31,6 +31,7 @@ class ArticlesView(RegionViewMixin,ListView ):
 class TagView(RegionViewMixin, ListView):
     
     def get_queryset(self):
+        #tylko dla artykulow
         return get_model('epapyrus','PrimaryTagItem').objects.get_for_tag(self.kwargs['tag_code'])
       
     def get_context_data(self, *args, **kwargs):
