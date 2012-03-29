@@ -1,0 +1,84 @@
+body{ 
+    /* Don't allow the browser to make the site unreadable. */
+    min-width: 640px;
+    width:68%;
+    font-family:  'Lucida Grande','Lucida Sans Unicode',Geneva,Verdana,Sans-Serif;
+    margin-left: auto;
+    margin-right: auto;
+    padding:0px;
+    
+}
+
+
+/* na razie tylko jako spacer */
+#header{
+    height: 200px;
+}
+
+
+#login-stripe{
+  padding:20px 50px 20px 50px;
+  border-top: 1px solid #D0D0D0;
+  border-bottom: 1px solid #D0D0D0;
+  color: #808080;
+  font-size: 0.8em;
+  font-weight: 100;
+}
+
+
+#login-stripe label{
+    color: white;
+    font-size:11px;
+    font-weight:bold;
+    display:block;
+}
+
+#login-stripe input{
+    color: #494127;
+    padding-left: 5px;
+    border: 2px solid #E0E0E0;
+    margin-bottom:10px;
+    background-color: #EDEDED;
+    width: 97%;
+}
+
+
+#login-stripe input#submit{
+    color: black;
+    padding-left: 5px;
+    border: 2px solid #E0E0E0;
+    margin-bottom:10px;
+    background-color: #EDEDED;
+    maring-left: 5px;
+    float: right;
+    font-weight: bold;
+    width: 40%;
+}
+
+
+
+#error-message{
+    margin-top: 20px;
+    font-weight: bold;
+    border: 2px solid #E0E0E0;
+    background-color: #EDEDED;
+    padding: 10px;
+
+}
+
+#login-form{
+    float: left;
+    border-right: 1px solid #E9E9E9;
+    padding-right: 50px;
+    width: 20%;
+}
+
+#info{
+    float: left;
+    padding: 10px 0 10px 10px;
+    margin-left: 40px;
+    width: 60%;
+}
+
+
+

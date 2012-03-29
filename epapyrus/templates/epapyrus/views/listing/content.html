@@ -1,8 +1,8 @@
 {% load markup %}
 
-{% for i in object_list %}
 
-    {% if i.is_published and i.is_promoted or user.is_authenticated and user == i.author%}
+{% for i in object_list %}
+  {% if i.is_published and i.is_promoted or user.is_authenticated and user == i.author%}
     <div class="article {% if not i.is_published %} not_published_bg {% else %} {%if not i.is_promoted %}not_promoted_bg %} {% endif %} {% endif %}">
                 <div class="article_header_front">
                     <h1> <a href="{% url article i.id %}">{{i.title}} </a></h1>
@@ -18,9 +18,8 @@
                 </p>
             </div>
     {% endif %}
-
 {% endfor %}
-
 {% if not object_list %}
- Brak artykułów
+  Nie udostępniono jeszcze żadnych wpisów dostępnych dla Ciebie. Zaloguj się, aby przeglądać dane dostępne
+  dla osób autoryzowanych.
 {% endif %}

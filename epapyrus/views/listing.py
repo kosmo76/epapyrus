@@ -32,7 +32,13 @@ class TagView(RegionViewMixin, ListView):
     
     def get_queryset(self):
         #tylko dla artykulow
-        return get_model('epapyrus','PrimaryTagItem').objects.get_for_tag(self.kwargs['tag_code'])
+        public = get_model('epapyrus', 'PrimaryTagItem').objects.get_public_for_tag(self.kwargs['tag_code'], model='article')
+        if self.request.user.is_authenticated():
+            authored = get_model('epapyrus', 'PrimaryTagItem').objects.get_authored_for_tag(self.kwargs['tag_code'], model='article', author=self.request.user).exclude(id__in=public.values_list('id', flat=True))
+            # we're merging the authored entries to the public ones
+            public = public|authored
+        return public
+
       
     def get_context_data(self, *args, **kwargs):
         context = super(TagView, self).get_context_data(*args, **kwargs)
@@ -41,8 +47,18 @@ class TagView(RegionViewMixin, ListView):
         return context 
         
 class BooksView(RegionViewMixin, ListView):
+
     def get_queryset(self):
-        return get_model('epapyrus','grouper').objects.filter(parent__exact=None)
+        """ Returns public books as default action. If the user is authenticated also inludes 
+        his authored books.
+
+        """
+        books = get_model('epapyrus', 'grouper').objects.get_public_books()
+        if self.request.user.is_authenticated():
+            authored_books = get_model('epapyrus', 'grouper').objects.get_authored_books(self.request.user).exclude(id__in=books.values_list('id', flat=True))
+            # we're merging the authored entries to the public books
+            books = books|authored_books
+        return books
       
     def get_context_data(self, *args, **kwargs):
         context = super(BooksView, self).get_context_data(*args, **kwargs)
