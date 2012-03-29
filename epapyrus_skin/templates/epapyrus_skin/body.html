@@ -5,8 +5,8 @@
 <div id="all_wrapper">
     <div id="up_stripe"></div>
     <div id="header" class="width_wrapper">
-            <h1> <a href="{% url main %}">epapyrus </a></h1>
-            <p> <em> write &amp; share your tech and science ideas </em></p>
+            <h1> <a href="{% url main %}">{{ theme_info.site_name|safe }}</a></h1>
+            <p> <em>{{ theme_info.site_slogan|safe }}</em></p>
     </div>
     
     <div id="navigation" class="width_wrapper">
