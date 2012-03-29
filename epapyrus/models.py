@@ -20,8 +20,24 @@ def image_save(instance, filename):
     return  os.path.join("%s" % instance.article.id,'images', '%s'%filename)
   
 
+class GrouperManager(models.Manager):
 
-# Create your models here.
+    def get_books(self):
+        """ Return the groupers having no parent. """
+        return self.filter(parent__isnull=True)
+
+    def get_authored_books(self, author):
+        """ Retrns public groupers having no parent. """
+        return self.get_books().filter(author=author)
+
+    def get_public(self):
+        """ Returns only public groupers. """
+        return self.filter(is_published=True)
+
+    def get_public_books(self):
+        """ Retrns public groupers having no parent. """
+        return self.get_public().filter(parent__isnull=True)
+
 
 class Grouper(models.Model):
     
@@ -35,6 +51,7 @@ class Grouper(models.Model):
     note = models.TextField(verbose_name="Grouper note", blank=True)
     is_published = models.BooleanField(verbose_name="Publish", default=False)
     
+    objects = GrouperManager()
         
     def __unicode__(self):
         return u"%s" % self.title
@@ -50,6 +67,17 @@ class Grouper(models.Model):
         grouper_tag= models.get_model('epapyrus', 'PrimaryTagItem').objects.filter(content_type__pk__exact=grouper_model.id, object_id__exact=self.id).values_list('tag', flat=True);
         return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=grouper_tag)
         
+
+class ArticleManager(models.Model):
+    
+    def get_authored(self, author):
+        """ Retrns public groupers having no parent. """
+        return self.filter(author=author)
+
+    def get_public(self):
+        """ Returns only public groupers. """
+        return self.filter(is_published=True)
+
 class Article(models.Model):
     
     author = models.ForeignKey('auth.User', verbose_name="Author")
@@ -66,7 +94,10 @@ class Article(models.Model):
     weight = models.IntegerField(verbose_name="Weight", default=0)
     is_published = models.BooleanField(verbose_name="Publish", default=False)
     is_promoted = models.BooleanField(verbose_name="Promote", default=False)
-        
+    
+
+    objects = ArticleManager()
+    
     def __unicode__(self):
         return u"%s" % self.title
 
@@ -137,12 +168,17 @@ class PrimaryTagType(models.Model):
     
 class PrimaryTagItemManager(models.Manager):
     
-    def get_for_tag(self, tag, model='article', app='epapyrus'):
-        content_type = ContentType.objects.get(app_label=app, model=model)
-        result = get_model('epapyrus','PrimaryTagItem').objects.filter(tag__code__exact=tag, content_type=content_type)
-        wynik = [ x.content_object for x in result ]
-        return wynik
-        
+    def get_for_tag(self, tag, model):
+        content_type = ContentType.objects.get(app_label='epapyrus', model=model)
+        result_ids = get_model('epapyrus', 'PrimaryTagItem').objects.filter(tag__code__exact=tag, content_type=content_type).values_list('object_id', flat=True)
+        return get_model('epapyrus', model).objects.filter(id__in=result_ids)
+
+    def get_public_for_tag(self, tag, model):
+        return self.get_for_tag(tag, model).filter(is_published=True)
+
+    def get_authored_for_tag(self, tag, model, author):
+        return self.get_for_tag(tag, model).filter(author=author)
+
         
 class PrimaryTagItem(models.Model):
     tag = models.ForeignKey('PrimaryTagType', verbose_name="Primary tag", related_name="primary_tag_items")

@@ -1,26 +1,23 @@
 {% load markup %}
 
-{% for i in object_list %}
-
-    {% if i.is_published and i.is_promoted or user.is_authenticated and user == i.author%}
-    <div class="article {% if not i.is_published %} not_published_bg  {% endif %}">
-                <div class="article_header_front">
-                    <h1> <a href="{% url grouper_view i.id %}">{{i.title}} </a></h1>
-                    <p class="article_info">
-                    {{ i.creation_datetime|date:"Y-m-d" }} przez <a href="#">{{i.author}}</a> w 
-                    {% for tag in i.get_tag %}
-                        <a href="{% url tag_view tag.code %}"> <span style="padding-right:10px;">{{tag}} </span></a>  
-                    {% endfor %}
-                    </p>
-                </div>
-                <p class="teaser">
-                {{ i.note }}
-                </p>
-            </div>
-    {% endif %}
-
-{% endfor %}
-
-{% if not object_list %}
- Brak artykułów
+{% if object_list %}
+  {% for i in object_list %}
+      <div class="article {% if not i.is_published %} not_published_bg  {% endif %}">
+        <div class="article_header_front">
+          <h1> <a href="{% url grouper_view i.id %}">{{i.title}} </a></h1>
+          <p class="article_info">
+            {{ i.creation_datetime|date:"Y-m-d" }} przez <a href="#">{{i.author}}</a> w 
+            {% for tag in i.get_tag %}
+            <a href="{% url tag_view tag.code %}"> <span style="padding-right:10px;">{{tag}} </span></a>  
+            {% endfor %}
+          </p>
+        </div>
+        <p class="teaser">
+          {{ i.note }}
+        </p>
+      </div>
+  {% endfor %}
+{% else %}
+  Nie udostępniono jeszcze żadnych podręczników dostępnych dla Ciebie. Zaloguj się, aby przeglądać dane dostępne
+  dla osób autoryzowanych.
 {% endif %}
