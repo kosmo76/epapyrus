@@ -7,9 +7,6 @@
 <ol>
   {% for chapter in book.get_groupers %}
   <li> {{ chapter.title }} 
-    <p>
-      {{ chapter.note }} 
-    </p>
     <ul>
       {% for article in chapter.get_articles%}
       <li> {{ article.title }} </li>
