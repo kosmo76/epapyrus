@@ -167,6 +167,37 @@ class ArticleDeleteView(RegionViewMixin, DeleteView):
            return self.delete(*args, **kwargs)
 
 
+
+class GrouperDeleteView(RegionViewMixin, DeleteView):
+    model = get_model('epapyrus', 'Grouper')
+    
+    form_class = forms.CreateGrouper
+    success_url = '/books/'
+ 
+ 
+    def get_object(self, queryset=None):
+        obj = super(GrouperDeleteView, self).get_object(queryset);
+        if self.request.user != obj.author:
+            raise Http404
+        return obj
+   
+    def get_context_data(self, **kwargs):
+        context = super(GrouperDeleteView, self).get_context_data(**kwargs)
+        context['region_postfixes'] = {'content': 'delete'}
+        return context
+        
+        
+    # znowu klopot bo delete robi redirecta co niekoniecznie musi byc poprawne
+    # a wiec najpier wysgnal a potem 
+    
+    
+    def post(self, *args, **kwargs):
+        if args[0].POST.has_key('Cancel'):
+           return HttpResponseRedirect("/books/");
+        else:
+           obj_delete.send(sender=GrouperDeleteView,  obj = self.get_object())
+           return self.delete(*args, **kwargs)
+
 class NoteCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'Note')
     

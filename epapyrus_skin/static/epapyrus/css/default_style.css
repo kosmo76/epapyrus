@@ -322,6 +322,13 @@ div.full_article
     padding-top:10px;
 }
 
+.book_header_bg
+{
+  background-color:#fafafa;    
+}
+
+
+
 .author_article_footer
 {
   margin-top:30px;
@@ -335,12 +342,12 @@ div.full_article
 
 .not_published_bg
 {
-  background-color: #FFF8F8;    
+  background-color: #FFD8D8;    
 }
 
 .not_promoted_bg
 {
-  background-color: #F8F8FF;    
+  background-color: #D8D8FF;    
 }
 
 /* ADD and EDIT form style */
@@ -397,6 +404,15 @@ div#images > a
 }
 
 /* BOOK front page TOC style */
+
+.grouper_note
+{
+ padding: 10px;
+ font-weight:400;
+ font-size:0.8em;
+ font-style:italic;
+}
+
 ol.book_toc_front
 {
     margin-top:20px;
@@ -405,9 +421,14 @@ ol.book_toc_front
 
 ol.book_toc_front > li
 {
-  font-weight:600;    
+  font-weight:600;  
+  margin-bottom:15px;
 }
 
+ul.book_articles_front > li a
+{
+    font-size:0.9em;
+}
 ul.book_articles_front
 {
     font-weight:400;

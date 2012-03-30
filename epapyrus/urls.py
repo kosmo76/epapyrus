@@ -13,7 +13,9 @@ urlpatterns = patterns('',
                        
                        url(r'^grouper/add$', login_required(edit.GrouperCreateView.as_view()), name='add_grouper'),
                        url(r'^grouper/(?P<pk>\d+)/edit/$', login_required(edit.GrouperUpdateView.as_view()), name='grouper_edit'),
-
+                       url(r'^grouper/(?P<pk>\d+)/delete/$', login_required(edit.GrouperDeleteView.as_view()), name='grouper_delete'),
+                       
+                       
                        url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'epapyrus_skin/login.html'}, name='login'),
                        url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
 
