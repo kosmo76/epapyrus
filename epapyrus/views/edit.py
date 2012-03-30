@@ -24,7 +24,7 @@ obj_delete = django.dispatch.Signal(providing_args=['obj'])
 
 class ArticleImageCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'ArticleImage')
-    template_name = 'epapyrus/image_add.html'
+   
     form_class = forms.AddImage
  
 
@@ -34,6 +34,20 @@ class ArticleImageCreateView(RegionViewMixin, CreateView):
         self.object.save()
         
         return HttpResponseRedirect("/article/%s/edit/"% self.kwargs['article'])
+
+class ArticleFileCreateView(RegionViewMixin, CreateView):
+    model = get_model('epapyrus', 'ArticleFile')
+   
+    form_class = forms.AddFile
+ 
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.article = get_model('epapyrus','article').objects.get(pk=self.kwargs['article'])
+        self.object.save()
+        
+        return HttpResponseRedirect("/article/%s/edit/"% self.kwargs['article'])
+
 
 class ArticleCreateView(RegionViewMixin, CreateView):
     model = get_model('epapyrus', 'Article')
@@ -98,6 +112,8 @@ class ArticleUpdateView(RegionViewMixin, UpdateView):
         context = super(ArticleUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['teaser'].widget.attrs['class'] = 'teaser'
         context['images'] =  self.object.article_images.all()
+        context['files'] =  self.object.article_files.all()
+        
          #kady views powinine to wyrzycac jesli maja byc widoczne tagi jako menu w sidebarze
         context['tags'] = get_model('epapyrus','PrimaryTagType').objects.all()
         return context

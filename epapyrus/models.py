@@ -18,7 +18,11 @@ file_system_storage = FileSystemStorage(location=files_location, base_url=settin
 def image_save(instance, filename):
     personal = instance.article.id
     return  os.path.join("%s" % instance.article.id,'images', '%s'%filename)
-  
+ 
+
+def file_save(instance, filename):
+    personal = instance.article.id
+    return  os.path.join("%s" % instance.article.id,'files', '%s'%filename) 
 
 class GrouperManager(models.Manager):
 
@@ -195,8 +199,13 @@ class PrimaryTagItem(models.Model):
 
 class ArticleImage(models.Model):
     title = models.CharField(max_length=255, verbose_name="Title", blank=True)
-    article = models.ForeignKey('Article', verbose_name = "Image", related_name="article_images")
-    attachment = models.FileField(storage = file_system_storage, upload_to = image_save)
+    article = models.ForeignKey('Article', verbose_name = "Article", related_name="article_images")
+    attachment = models.ImageField(verbose_name="Image", storage = file_system_storage, upload_to = image_save, )
+ 
+class ArticleFile(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Title", blank=True)
+    article = models.ForeignKey('Article', verbose_name = "Article", related_name="article_files")
+    attachment = models.FileField(verbose_name="File", storage = file_system_storage, upload_to = file_save)
  
 #model reprezentujacy notatke do artykulu lub groupera
 class Note(models.Model):

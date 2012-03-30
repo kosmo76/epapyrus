@@ -14,6 +14,20 @@
 <a href="{% url add_image object.id %}"> add image </a>
 </div>
 
+<div id="images" style="color:black; padding-top:20px;">
+<h3> Files related to article</h3>
+<table class="image_table">
+<thead>
+<tr><th> filename</th></tr>
+</thead>
+<tbody>
+{% for  i in files %}
+<tr><td>{{i.attachment}}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+<a href="{% url add_file object.id %}"> add file </a>
+</div>
 
 {% for field in form %}
     <div style="margin-top:30px;">
