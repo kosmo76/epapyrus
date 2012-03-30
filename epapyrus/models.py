@@ -68,6 +68,9 @@ class Grouper(models.Model):
         return models.get_model('epapyrus','PrimaryTagType').objects.filter(id__in=grouper_tag)
         
 
+    class Meta:
+        ordering = ('weight', 'creation_datetime', 'title')
+
 class ArticleManager(models.Model):
     
     def get_authored(self, author):
@@ -132,8 +135,6 @@ class Article(models.Model):
         regexp = re.compile(r"\${1,2}([^$]+)\${1,2}",re.UNICODE)
         
         extras = self.extras.replace('locale://',settings.MEDIA_URL)
-        print extras
-        
         r = regexp.search(napis)
         dane = regexp.finditer(napis)
         start=0
@@ -144,7 +145,6 @@ class Article(models.Model):
             end=i.start()
             if start > 0:
                  nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])[3:-4]
-                 print nowy
             else:
                 nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])
             nowy += napis[i.start():i.end()]+" "
@@ -155,6 +155,9 @@ class Article(models.Model):
             nowy += markdown.markdown(extras+napis[start:],['codehilite'])
         #nowy = nowy.replace('locale://',settings.MEDIA_URL)
         return nowy
+
+    class Meta:
+        ordering = ('weight', 'creation_datetime', 'title')
 
         
 class PrimaryTagType(models.Model):
