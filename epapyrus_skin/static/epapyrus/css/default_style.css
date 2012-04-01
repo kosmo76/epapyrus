@@ -163,6 +163,22 @@ ul.book_articles li a
     line-height:1.5em;
 }
 
+.full_article ol
+{
+  list-style-position:inside;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.full_article ul
+{
+  list-style-image:url('../images/img03.gif');
+  list-style-position:inside;
+  padding-top:10px;
+  padding-bottom:10px;
+
+}
+
 div.full_article
 {
   font-size:0.95em;
