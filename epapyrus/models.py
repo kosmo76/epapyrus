@@ -5,10 +5,13 @@ from django.contrib.contenttypes import generic
 from django.db.models import get_model
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-import markdown
 import re
 import os
 import datetime
+import markdown
+import mdx_epapyrusmathjax as mathjax
+import mdx_epapcode as ecode
+
 
 
 
@@ -134,31 +137,14 @@ class Article(models.Model):
     
     #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
-        napis = self.body
-        
-        regexp = re.compile(r"\${1,2}([^$]+)\${1,2}",re.UNICODE)
-        
         extras = self.extras.replace('locale://',settings.MEDIA_URL)
-        r = regexp.search(napis)
-        dane = regexp.finditer(napis)
-        start=0
-        nowy=""
+
+        myext = mathjax.EpapyrusMathJaxExtension()
+        myext2 = ecode.EpapCodeExtension()
         
-        # 'codehilite(force_linenos=True)'
-        for i in  dane:
-            end=i.start()
-            if start > 0:
-                 nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])[3:-4]
-            else:
-                nowy += markdown.markdown( extras+napis[start:end] ,['codehilite'])
-            nowy += napis[i.start():i.end()]+" "
-            start=i.end()
-        if (start >0):
-            nowy += markdown.markdown(extras+napis[start:],['codehilite'])[3:-4]
-        else:
-            nowy += markdown.markdown(extras+napis[start:],['codehilite'])
-        #nowy = nowy.replace('locale://',settings.MEDIA_URL)
-        return nowy
+        md = markdown.Markdown(extensions=[myext2,myext,'codehilite'])
+        return  md.convert(extras + self.body)
+        
 
     class Meta:
         ordering = ('weight', 'creation_datetime', 'title')

@@ -163,6 +163,10 @@ ul.book_articles li a
     line-height:1.5em;
 }
 
+.full_article p
+{
+  padding-top:16px;
+}
 .full_article ol
 {
   list-style-position:inside;
