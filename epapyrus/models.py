@@ -208,11 +208,25 @@ class ArticleImage(models.Model):
     article = models.ForeignKey('Article', verbose_name = "Article", related_name="article_images")
     attachment = models.ImageField(verbose_name="Image", storage = file_system_storage, upload_to = image_save, )
  
+    def delete(self, *args, **kwargs):
+        image_path = os.path.join( self.attachment.file.name)
+        os.remove(image_path)
+        self.attachment.delete()
+        
+        super(ArticleImage, self).delete(*args, **kwargs)
+        
 class ArticleFile(models.Model):
     title = models.CharField(max_length=255, verbose_name="Title", blank=True)
     article = models.ForeignKey('Article', verbose_name = "Article", related_name="article_files")
     attachment = models.FileField(verbose_name="File", storage = file_system_storage, upload_to = file_save)
  
+    def delete(self, *args, **kwargs):
+        file_path = os.path.join( self.attachment.file.name)
+        os.remove(file_path)
+        self.attachment.delete()
+        
+        super(ArticleFile, self).delete(*args, **kwargs)
+        
 #model reprezentujacy notatke do artykulu lub groupera
 class Note(models.Model):
     title = models.CharField(max_length=255, verbose_name="Title", blank=True)
