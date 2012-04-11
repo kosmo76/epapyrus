@@ -137,8 +137,12 @@ class Article(models.Model):
     
     #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
     def get_test(self):
-        extras = self.extras.replace('locale://',settings.MEDIA_URL)
-
+        extras_user = self.extras
+        extras_images = self.get_images_ref()
+        extras_files = self.get_files_ref()
+        
+        extras = extras_images + extras_files + extras_user
+        print extras
         myext = mathjax.EpapyrusMathJaxExtension()
         myext2 = ecode.EpapCodeExtension()
         
@@ -146,9 +150,25 @@ class Article(models.Model):
         return  md.convert(extras + self.body)
         
 
+    def get_images_ref(self):
+        ref=""
+        for image in self.article_images.all():
+            ref = "%s\n[im%d]: %s" %(ref, image.id, image.attachment.url)
+        
+        ref = "%s\n" % ref
+        return ref
+    
     class Meta:
         ordering = ('weight', 'creation_datetime', 'title')
 
+    def get_files_ref(self):
+        ref=""
+        for i in self.article_files.all():
+            ref = "%s\n[file%d]: %s" %(ref, i.id, i.attachment.url)
+        
+        ref = "%s\n" % ref
+        return ref
+    
         
 class PrimaryTagType(models.Model):
     name = models.CharField(max_length=100, verbose_name="Tab name", unique=True)

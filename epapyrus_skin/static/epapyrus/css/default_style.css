@@ -163,6 +163,11 @@ ul.book_articles li a
     line-height:1.5em;
 }
 
+
+.full_article img
+{
+  max-width:100%;    
+}
 .full_article p
 {
   padding-top:16px;
@@ -409,7 +414,7 @@ div#images > a
 .image_table th
 {
    font-weight:400;
-   width:50%;
+   width:30%;
    background-color:#f0f0f0;
    font-size:0.9em;
    

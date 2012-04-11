@@ -3,11 +3,11 @@
 <h3> Images related to article</h3>
 <table class="image_table">
 <thead>
-<tr><th> filename</th><th>thumbnail</th></tr>
+<tr><th> ref</th><th>thumbnail</th><th>filename</th></tr>
 </thead>
 <tbody>
 {% for  i in images %}
-<tr><td>{{i.attachment}}</td><td> <img src="{{i.attachment.url}}" style="width:30px;"></td></tr>
+<tr><td>[im{{i.id}}]</td> <td>{{i.attachment}}</td><td> <img src="{{i.attachment.url}}" style="width:30px;"></td></tr>
 {% endfor %}
 </tbody>
 </table>
@@ -18,11 +18,11 @@
 <h3> Files related to article</h3>
 <table class="image_table">
 <thead>
-<tr><th> filename</th></tr>
+<tr><th>ref</th><th> filename</th></tr>
 </thead>
 <tbody>
 {% for  i in files %}
-<tr><td>{{i.attachment}}</td></tr>
+<tr><td> [file{{i.id}}]</td><td>{{i.attachment}}</td></tr>
 {% endfor %}
 </tbody>
 </table>
