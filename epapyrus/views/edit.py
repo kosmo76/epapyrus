@@ -297,7 +297,56 @@ class NoteDeleteView(RegionViewMixin, DeleteView):
            
            return self.delete(*args, **kwargs)    
            
+        
+
+class ArticleImageDeleteView(RegionViewMixin, DeleteView):
+    model = get_model('epapyrus', 'ArticleImage')
+    
+    
+   
+    def get_success_url(self):
+        return "/article/%s/edit/"% self.article.id
+     
+    def get_context_data(self, **kwargs):
+        context = super(ArticleImageDeleteView, self).get_context_data(**kwargs)
+        context['region_postfixes'] = {'content': 'delete'}
+        return context
+    
+    
+    def post(self, *args, **kwargs):
+        self.article = self.get_object().article;
+        print self.article
+        print self.get_object().attachment
+        if args[0].POST.has_key('Cancel'):
+           return HttpResponseRedirect(self.get_success_url());
+        else:
            
+           return self.delete(*args, **kwargs)    
+ 
+ 
+class ArticleFileDeleteView(RegionViewMixin, DeleteView):
+    model = get_model('epapyrus', 'ArticleFile')
+    
+    
+   
+    def get_success_url(self):
+        return "/article/%s/edit/"% self.article.id
+     
+    def get_context_data(self, **kwargs):
+        context = super(ArticleFileDeleteView, self).get_context_data(**kwargs)
+        context['region_postfixes'] = {'content': 'delete'}
+        return context
+    
+    
+    def post(self, *args, **kwargs):
+        self.article = self.get_object().article;
+        print self.article
+        print self.get_object().attachment
+        if args[0].POST.has_key('Cancel'):
+           return HttpResponseRedirect(self.get_success_url());
+        else:
+           
+           return self.delete(*args, **kwargs)    
            
 #get tag signal after save
 @receiver(tag_save)

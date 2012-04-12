@@ -3,11 +3,15 @@
 <h3> Images related to article</h3>
 <table class="image_table">
 <thead>
-<tr><th> ref</th><th>thumbnail</th><th>filename</th></tr>
+<tr><th> ref</th><th>thumbnail</th><th>filename</th><th></th></tr>
 </thead>
 <tbody>
 {% for  i in images %}
-<tr><td>[im{{i.id}}]</td> <td>{{i.attachment}}</td><td> <img src="{{i.attachment.url}}" style="width:30px;"></td></tr>
+<tr>
+<td>[im{{i.id}}]</td> <td>{{i.attachment}}</td><td> <img src="{{i.attachment.url}}" style="width:30px;"></td>
+<td> <a href="{% url delete_image i.id %}"> delete</a>
+
+</tr>
 {% endfor %}
 </tbody>
 </table>
@@ -18,11 +22,11 @@
 <h3> Files related to article</h3>
 <table class="image_table">
 <thead>
-<tr><th>ref</th><th> filename</th></tr>
+<tr><th>ref</th><th> filename</th><th></th></tr>
 </thead>
 <tbody>
 {% for  i in files %}
-<tr><td> [file{{i.id}}]</td><td>{{i.attachment}}</td></tr>
+<tr><td> [file{{i.id}}]</td><td>{{i.attachment}}</td><td> <a href="{% url delete_file i.id %}"> delete</a></tr>
 {% endfor %}
 </tbody>
 </table>

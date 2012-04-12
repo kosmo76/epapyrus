@@ -135,9 +135,10 @@ class Article(models.Model):
         note_model = get_model('epapyrus', 'Note').objects.filter(content_type__pk__exact=article_model.id, object_id__exact=self.id).exists()
         return note_model
     
-    #TODO jak laczy inlineowy TEX to zawsze obtacza <p> </p> poprzednie i nastepne linijki - parsowac !?
+
     def get_test(self):
-        extras_user = self.extras
+        #uwaga trzebaby wyparsowac to locale !!!
+        extras_user =  extras = self.extras.replace('locale://',settings.MEDIA_URL)
         extras_images = self.get_images_ref()
         extras_files = self.get_files_ref()
         

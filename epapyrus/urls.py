@@ -24,7 +24,10 @@ urlpatterns = patterns('',
                        url(r'^book/(?P<pk>\d+)/$',detail.GrouperView.as_view(), name="grouper_view"),
                        
                        url(r'^image/(?P<article>\d+)/add/$',login_required(edit.ArticleImageCreateView.as_view()), name="add_image"),
+                       url(r'^image/(?P<pk>\d+)/delete/$',login_required(edit.ArticleImageDeleteView.as_view()), name="delete_image"),
                        url(r'^file/(?P<article>\d+)/add/$',login_required(edit.ArticleFileCreateView.as_view()), name="add_file"),
+                       url(r'^file/(?P<pk>\d+)/delete/$',login_required(edit.ArticleFileDeleteView.as_view()), name="delete_file"),
+                       
                        url(r'^note/(?P<model_name>article|grouper)/(?P<obj_id>\d+)/create$',login_required(edit.NoteCreateView.as_view()), name="add_note"),
                        url(r'^note/(?P<pk>\d+)/update$',login_required(edit.NoteUpdateView.as_view()), name="note_update"),
                        url(r'^note/(?P<pk>\d+)/delete$',login_required(edit.NoteDeleteView.as_view()), name="note_delete"),
