@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import markdown
 from markdown.inlinepatterns import Pattern
-from markdown import etree
+#from markdown import etree
 
 BLOCK_MATH_RE = r'\${2}([^$]+)\${2}'
 INLINE_MATH_RE = r'\\\(([^)]+)\\\)'
@@ -23,7 +23,7 @@ class EpapyrusMathJaxPattern(Pattern):
         #el.text = markdown.AtomicString(m.group(2))
         #w innym wypadku trzeba stworzyc wlasny tag i potem ewentualnie go wywalic, ale ladne to to nie jest 
        
-        text = markdown.AtomicString(m.group(2))
+        text = markdown.util.AtomicString(m.group(2))
         return self.open_tag + text + self.close_tag
 
 class EpapyrusMathJaxExtension(markdown.Extension):

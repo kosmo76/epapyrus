@@ -4,7 +4,7 @@ import re
 from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 
-from markdown import etree
+#from markdown import etree
 
 BLOCK_CODE_RE = r'\[code\](.+)\[/code\]'
 
@@ -28,7 +28,6 @@ class EpapyrusCodePattern(Preprocessor):
 
 class EpapCodeExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
-        print "AAAAAAAAAAA"
         pattern=EpapyrusCodePattern()
         md.preprocessors.add('epapcode',pattern,'_begin')
         
